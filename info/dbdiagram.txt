@@ -1,0 +1,73 @@
+// Dokumentace schématu pro semestrální práci - Task Planner
+
+Table users {
+  id integer [primary key, increment]
+  username varchar [not null]
+  email varchar [unique, not null]
+  password varchar // pro případný klasický login
+  oauth_provider varchar // např. "google"
+  oauth_id varchar // externí ID z oauth
+  created_at timestamp
+}
+
+Table projects {
+  id integer [primary key, increment]
+  created_by integer [ref: > users.id]
+  name varchar [not null]
+  description text
+  color_hex varchar [note: 'Barva projektu pro UI']
+  created_at timestamp
+}
+
+Table project_members {
+  project_id integer [ref: > projects.id]
+  user_id integer [ref: > users.id]
+  role varchar [note: 'admin, editor, viewer']
+  
+  indexes {
+    (project_id, user_id) [pk]
+  }
+}
+
+Table tasks {
+  id integer [primary key, increment]
+  project_id integer [ref: > projects.id]
+  title varchar
+  description text
+  assignee_id integer [ref: > users.id, note: 'Odpovědná osoba']
+  reporter_id integer [ref: > users.id, note: 'Kdo úkol vytvořil']
+  status_id integer [ref: > statuses.id]
+  priority_weight integer [note: '1-5 (nízká až kritická)']
+  time_spent_minutes integer [default: 0]
+  due_date date
+  created_at timestamp
+}
+
+Table statuses {
+  id integer [primary key, increment]
+  project_id integer [ref: > projects.id]
+  name varchar
+}
+
+Table tags {
+  id integer [primary key, increment]
+  project_id integer [ref: > projects.id]
+  name varchar
+}
+
+Table task_tags {
+  task_id integer [ref: > tasks.id]
+  tag_id integer [ref: > tags.id]
+  
+  indexes {
+    (task_id, tag_id) [pk]
+  }
+}
+
+Table comments {
+  id integer [primary key, increment]
+  task_id integer [ref: > tasks.id]
+  user_id integer [ref: > users.id]
+  content text
+  created_at timestamp
+}

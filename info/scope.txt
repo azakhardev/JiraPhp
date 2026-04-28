@@ -1,0 +1,28 @@
+## 📋 Finální definice Scope
+### 1. Autentizace a Profil
+- Google OAuth: Hlavní cesta. Pokud uživatel v DB není, vytvoří se (registrace), pokud je, přihlásí se.
+
+- Profil: Změna jména a e-mailu. (Pozor: Heslo se mění jen u lokálních účtů, u Google OAuth ho měnit nemůžeš/nepotřebuješ – v UI to musí být ošetřeno).
+
+- Logika: Odhlášení vymaže session.
+
+### 2. Dashboard (Home Page)
+- Dva pohledy: „Moje projekty“ (kde jsem admin) a „Projekty, kde hostuji“.
+
+- Filtrace: Rychlý search v názvech projektů.
+
+- Akce: Tlačítko „Nový projekt“.
+
+### 3. Detail Projektu (Seznam úloh)
+- Seznam úloh: Čistý seznam s možností otevření detailu a smazáním úlohy.
+
+- Filtrace (Cookies): Filtry na stav, tagy a lidi. Ukládání do cookies zajistí, že když se uživatel vrátí, vidí to, co naposledy.
+
+- CRUD úloh: Page s novým úkolem. Editace stávajícího => otevře page pro nový úkol s předvyplněnými údaji (dle ID). Smazání (pouze zadavatel – ošetřeno v PHP!) ze seznamu všech tasků.
+
+### 4. Nastavení projektu (Administrace)
+- Správa lidí: Přidávání uživatelů do projektu přes e-mail/username. Změna role (Admin/Editor/Viewer => select u jména).
+
+- Správa číselníků: CRUD pro Statusy a Tagy (jako chips s košem a tužkou => otevře popup).
+
+- Základní info: Změna názvu, popisu a barvy projektu.
