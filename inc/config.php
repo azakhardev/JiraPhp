@@ -1,8 +1,8 @@
 <?php
-session_start();
-
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
+session_start();
 
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'zaca06');

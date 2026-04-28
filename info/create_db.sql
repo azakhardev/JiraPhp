@@ -51,7 +51,7 @@ CREATE TABLE tasks (
     assignee_id INT,
     reporter_id INT NOT NULL,
     status_id INT,
-    priority_weight TINYINT CHECK (priority_weight BETWEEN 1 AND 5), -- 1-5 (nízká až kritická)
+    priority_weight TINYINT CHECK (priority_weight BETWEEN 1 AND 5) DEFAULT 3, -- 1-5 (nízká až kritická)
     time_spent_minutes INT DEFAULT 0,
     due_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
