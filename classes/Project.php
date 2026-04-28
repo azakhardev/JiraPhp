@@ -44,12 +44,6 @@ class Project {
         }
     }
 
-    public static function addMember(int $projectId, int $userId, string $role = 'viewer') {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("INSERT IGNORE INTO project_members (project_id, user_id, role) VALUES (?, ?, ?)");
-        return $stmt->execute([$projectId, $userId, $role]);
-    }
-
     public static function getById(int $id) {
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT * FROM projects WHERE id = ?");
@@ -84,9 +78,21 @@ class Project {
         return $stmt->fetchAll();
     }
 
+    public static function addMember(int $projectId, int $userId, string $role = 'viewer') {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("INSERT IGNORE INTO project_members (project_id, user_id, role) VALUES (?, ?, ?)");
+        return $stmt->execute([$projectId, $userId, $role]);
+    }
+
     public static function removeMember(int $projectId, int $userId) {
         $db = Database::getConnection();
         $stmt = $db->prepare("DELETE FROM project_members WHERE project_id = ? AND user_id = ?");
         return $stmt->execute([$projectId, $userId]);
+    }
+
+    public static function updateMemberRole(int $projectId, int $userId, string $role) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("UPDATE project_members SET role = ? WHERE project_id = ? AND user_id = ?");
+        return $stmt->execute([$role, $projectId, $userId]);
     }
 }

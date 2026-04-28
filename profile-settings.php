@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
     try {
+        //ACTION 1: Update Profile
         if ($action === 'update_profile') {
             $newUsername = trim(htmlspecialchars($_POST['username'] ?? ''));
 
@@ -25,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['flash_error'] = "Username cannot be empty.";
             }
         }
+        //ACTION 2: Change Password
         elseif ($action === 'update_password' && $isLocalAccount) {
             $currentPassword = $_POST['current_password'] ?? '';
             $newPassword = $_POST['new_password'] ?? '';
@@ -48,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['flash_error'] = "Current password is incorrect.";
             }
         }
+        //ACTION 3: Delete Account
         elseif ($action === 'delete_account') {
             User::delete($userId);
             // Destroy session and redirect to login

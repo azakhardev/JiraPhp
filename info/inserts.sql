@@ -1,6 +1,11 @@
 -- 0. USERS
 INSERT INTO users (id, username, email, password, created_at) VALUES
-(1, 'artem_zacharcenko', 'zaca06@vse.cz', '$2y$10$BgtUyiVjhEQ8mrNh04Le8.EzgFkNggfTiBeOYragvH5D1SgVvyMTW', '2026-04-27 22:32:00');
+(1, 'artem_zacharcenko', 'zaca06@vse.cz', '$2y$10$BgtUyiVjhEQ8mrNh04Le8.EzgFkNggfTiBeOYragvH5D1SgVvyMTW', '2026-04-27 22:32:00'),
+(2, 'user2', 'user2@vse.cz', '$2y$10$BgtUyiVjhEQ8mrNh04Le8.EzgFkNggfTiBeOYragvH5D1SgVvyMTW', '2026-04-27 22:32:00'),
+(3, 'user3', 'user3@vse.cz', '$2y$10$BgtUyiVjhEQ8mrNh04Le8.EzgFkNggfTiBeOYragvH5D1SgVvyMTW', '2026-04-27 22:32:00'),
+(4, 'user4', 'user4@vse.cz', '$2y$10$BgtUyiVjhEQ8mrNh04Le8.EzgFkNggfTiBeOYragvH5D1SgVvyMTW', '2026-04-27 22:32:00'),
+(5, 'user5', 'user5@vse.cz', '$2y$10$BgtUyiVjhEQ8mrNh04Le8.EzgFkNggfTiBeOYragvH5D1SgVvyMTW', '2026-04-27 22:32:00'),
+(6, 'user6', 'user6@vse.cz', '$2y$10$BgtUyiVjhEQ8mrNh04Le8.EzgFkNggfTiBeOYragvH5D1SgVvyMTW', '2026-04-27 22:32:00');
 
 -- 1. PROJECTS
 -- Creating two different projects
