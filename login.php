@@ -9,9 +9,6 @@ if (isset($_SESSION['user_id'])) {
 
 $error = '';
 
-//echo(password_hash('123456Ab', PASSWORD_DEFAULT));
-//die();
-
 // Zpracování klasického přihlášení po odeslání formuláře
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
     // Sanitizace e-mailu

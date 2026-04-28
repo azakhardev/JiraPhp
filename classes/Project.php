@@ -30,10 +30,10 @@ class Project {
             $stmt->execute([$projectId, $creatorId]);
 
             // 3. Vytvoření výchozích stavů (aby projekt nebyl prázdný)
-            Status::addStatus($projectId, 'To Do');
-            Status::addStatus($projectId, 'In Progress');
-            Status::addStatus($projectId, 'Test');
-            Status::addStatus($projectId, 'Done');
+            Status::add($projectId, 'To Do');
+            Status::add($projectId, 'In Progress');
+            Status::add($projectId, 'Test');
+            Status::add($projectId, 'Done');
 
             $db->commit(); // Potvrzení změn
             return $projectId;
@@ -50,5 +50,43 @@ class Project {
         return $stmt->execute([$projectId, $userId, $role]);
     }
 
-    // Zde by pak mohla být metoda getMembers($projectId)
+    public static function getById(int $id) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM projects WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(); // Vrací pole s daty projektu nebo false
+    }
+
+    public static function update(int $id, string $name, string $description, string $color) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("UPDATE projects SET name = ?, description = ?, color_hex = ? WHERE id = ?");
+        return $stmt->execute([$name, $description, $color, $id]);
+    }
+
+    public static function delete(int $id) {
+        $db = Database::getConnection();
+        // Díky FOREIGN KEY ... ON DELETE CASCADE ve tvé databázi
+        // tohle smaže i všechny úkoly, tagy a statusy navázané na tento projekt.
+        $stmt = $db->prepare("DELETE FROM projects WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public static function getMembers(int $projectId) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
+            SELECT u.id, u.username, u.email, pm.role 
+            FROM users u 
+            JOIN project_members pm ON u.id = pm.user_id 
+            WHERE pm.project_id = ?
+            ORDER BY pm.role ASC, u.username ASC
+        ");
+        $stmt->execute([$projectId]);
+        return $stmt->fetchAll();
+    }
+
+    public static function removeMember(int $projectId, int $userId) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("DELETE FROM project_members WHERE project_id = ? AND user_id = ?");
+        return $stmt->execute([$projectId, $userId]);
+    }
 }

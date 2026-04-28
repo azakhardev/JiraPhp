@@ -27,17 +27,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">My Projects</a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['username'] ?? 'Profil') ?>
+                            <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['username'] ?? 'Profile') ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Profile Settings</a></li>
+                            <li><a class="dropdown-item" href="profile-settings.php">Profile Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
                         </ul>
