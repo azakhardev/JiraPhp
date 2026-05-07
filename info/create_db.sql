@@ -10,7 +10,9 @@ CREATE TABLE users (
     password VARCHAR(255),
     oauth_provider VARCHAR(50), -- Např. 'google', 'github'
     oauth_id VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reset_token_hash VARCHAR(64) DEFAULT NULL,
+    reset_token_expires_at DATETIME DEFAULT NULL
 ) ENGINE=InnoDB;
 
 -- 2. Tabulka projektů

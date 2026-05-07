@@ -20,6 +20,7 @@ class User
         $stmt->execute([$username, $email, $passwordHash]);
         return $db->lastInsertId();
     }
+
     public static function createGlobal(string $username, string $email, string $oauthId, string $provider = 'google')
     {
         $db = Database::getConnection();
@@ -31,37 +32,68 @@ class User
         return $db->lastInsertId(); // Vrátí ID nově vytvořeného uživatele
     }
 
-    public static function getById(int $id) {
+    public static function getById(int $id)
+    {
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
 
-    public static function getAllExcept(int $excludeUserId) {
+    public static function getAllExcept(int $excludeUserId)
+    {
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT id, username, email FROM users WHERE id != ? ORDER BY username ASC");
         $stmt->execute([$excludeUserId]);
         return $stmt->fetchAll();
     }
 
-    public static function updateUsername(int $id, string $username) {
+    public static function updateUsername(int $id, string $username)
+    {
         $db = Database::getConnection();
         $stmt = $db->prepare("UPDATE users SET username = ? WHERE id = ?");
         return $stmt->execute([$username, $id]);
     }
 
-    public static function updatePassword(int $id, string $passwordHash) {
+    public static function updatePassword(int $id, string $passwordHash)
+    {
         $db = Database::getConnection();
         $stmt = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
         return $stmt->execute([$passwordHash, $id]);
     }
 
-    public static function delete(int $id) {
+    public static function delete(int $id)
+    {
         $db = Database::getConnection();
         // Díky kaskádovému mazání v DB se smažou i všechny komentáře
         // a vazby tohoto uživatele v projektech.
         $stmt = $db->prepare("DELETE FROM users WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public static function setResetToken(int $id, string $tokenHash, string $expiry)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("UPDATE users SET reset_token_hash = ?, reset_token_expires_at = ? WHERE id = ?");
+        return $stmt->execute([$tokenHash, $expiry, $id]);
+    }
+
+    public static function findByResetToken(string $tokenHash)
+    {
+        $db = Database::getConnection();
+
+        $currentTime = date('Y-m-d H:i:s');
+
+        $stmt = $db->prepare("SELECT * FROM users WHERE reset_token_hash = ? AND reset_token_expires_at > ?");
+        $stmt->execute([$tokenHash, $currentTime]);
+
+        return $stmt->fetch();
+    }
+
+    public static function clearResetToken(int $id)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("UPDATE users SET reset_token_hash = NULL, reset_token_expires_at = NULL WHERE id = ?");
         return $stmt->execute([$id]);
     }
 
